@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd ">
+
+	<!-- springmvc扫描 -->
+	<context:component-scan base-package="cn.buaa.ssm.controller"></context:component-scan>
+	<context:component-scan base-package="cn.buaa.ssm.service"></context:component-scan>
+	<context:component-scan base-package="cn.buaa.ssm.dao"></context:component-scan>
+	<!-- c3p0连接池，读取外部文件 -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+	
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>	
+		<property name="driverClass" value="${jdbc.driverClass}"></property>	
+		<property name="user" value="${jdbc.user}"></property>	
+		<property name="password" value="${jdbc.password}"></property>	
+	
+	</bean>
+	
+	<!-- mybatis的工厂 ,需配置文件-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- 配置文件 -->
+		<property name="configLocation" value="classpath:sqlMapConfig.xml"></property>
+		
+	</bean>
+	
+	<!-- mapper动态代理开发，扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 自动寻找工厂
+		基本包 -->
+		<property name="basePackage" value="cn.buaa.ssm.mapper"></property>
+	</bean> 
+	
+	<!-- 自定义异常处理器 -->
+	<bean class="cn.buaa.ssm.exception.CustomerExceptionResolver"></bean>
+	
+	<!-- 视图解释器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    	<property name="prefix" value="/WEB-INF/jsp/"/>
+    	<property name="suffix" value=".jsp"/>
+    </bean>
+	
+</beans>

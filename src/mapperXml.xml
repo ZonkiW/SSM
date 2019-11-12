@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.buaa.ssm.mapper.SSMMapper">
+
+	<insert id="inserTest" parameterType="Items">
+		insert into items (name,price,createtime) values(#{name},#{price},#{createtime})
+	</insert>
+
+	<select id="selectItems" resultType="Items">
+	
+		select * from items 
+	
+	</select>
+	
+	<select id="getItemsById" parameterType="Integer"  resultType="Items">
+	
+		select * from items where id=#{v}
+	
+	</select>
+	
+	<update id="UpdateItems" parameterType="Items">
+	
+		update items set name=#{name},price=#{price},detail=#{detail} where id=#{id}
+	
+	</update>
+</mapper>
